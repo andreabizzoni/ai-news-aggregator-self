@@ -1,14 +1,13 @@
 """YouTube channel scraper using RSS feed."""
 
 from datetime import datetime, timedelta, timezone
-from typing import Optional
-from dataclasses import dataclass
+from typing import Optional, List
 import feedparser
 from youtube_transcript_api import YouTubeTranscriptApi
+from pydantic import BaseModel
 
 
-@dataclass
-class YouTubeVideo:
+class YouTubeVideo(BaseModel):
     """Represents a YouTube video."""
 
     video_id: str
@@ -19,12 +18,18 @@ class YouTubeVideo:
     thumbnail_url: Optional[str] = None
 
 
+class VideoTranscript(BaseModel):
+    """Represents a YouTube video transcript."""
+
+    transcript: str
+
+
 class YouTubeScraper:
     """Scrapes YouTube channel RSS feeds for recent videos."""
 
     RSS_FEED_URL = "https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
 
-    def scrape_channel(
+    def get_latest_videos(
         self, channel_id: str, time_window_hours: int = 24
     ) -> list[YouTubeVideo]:
         """
@@ -64,7 +69,7 @@ class YouTubeScraper:
 
         return videos
 
-    def get_transcript(self, video_id: str) -> str:
+    def get_transcript(self, video_id: str) -> VideoTranscript:
         """
         Fetch the transcript for a YouTube video.
 
@@ -76,14 +81,20 @@ class YouTubeScraper:
         """
         ytt_api = YouTubeTranscriptApi()
         transcript_list = ytt_api.fetch(video_id)
-        return " ".join([snippet.text for snippet in transcript_list])
+        return VideoTranscript(
+            transcript=" ".join([snippet.text for snippet in transcript_list])
+        )
+
+    def scrape_youtube_channel(
+        self, channel_id: str, time_window_hours: int = 24
+    ) -> List[VideoTranscript]:
+        videos = self.get_latest_videos(channel_id, time_window_hours)
+        transcripts = []
+        for video in videos:
+            transcripts.append(scraper.get_transcript(video.video_id))
+        return transcripts
 
 
 if __name__ == "__main__":
     scraper = YouTubeScraper()
-    videos = scraper.scrape_channel("UCHnyfMqiRRG1u-2MsSQLbXA", time_window_hours=240)
-    transcripts = []
-    for video in videos:
-        transcript = scraper.get_transcript(video.video_id)
-        transcripts.append(transcript)
-    transcripts
+    print(scraper.scrape_youtube_channel("UCHnyfMqiRRG1u-2MsSQLbXA", 100))
