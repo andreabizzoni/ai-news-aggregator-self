@@ -75,10 +75,5 @@ class YouTubeScraper:
         videos = self.get_latest_videos(channel_id, time_window_hours)
         transcripts = []
         for video in videos:
-            transcripts.append(scraper.get_transcript(video.video_id))
+            transcripts.append(self.get_transcript(video.video_id))
         return transcripts
-
-
-if __name__ == "__main__":
-    scraper = YouTubeScraper()
-    print(scraper.scrape_youtube_channel("UCHnyfMqiRRG1u-2MsSQLbXA", 100))
