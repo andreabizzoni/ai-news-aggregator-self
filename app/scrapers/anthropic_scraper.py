@@ -1,21 +1,10 @@
 """Anthropic news scraper using RSS feeds."""
 
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 import feedparser
-from pydantic import BaseModel
 from docling.document_converter import DocumentConverter
 
-
-class NewsArticle(BaseModel):
-    """Represents an Anthropic news article."""
-
-    title: str
-    description: str
-    url: str
-    published_at: datetime
-    guid: str
-    category: Optional[str] = None
+from models.news import NewsArticle
 
 
 class AnthropicAIScraper:
@@ -71,7 +60,6 @@ class AnthropicAIScraper:
                         url=entry.link,
                         published_at=published_at,
                         guid=entry.guid,
-                        category=entry.get("category"),
                     )
                     articles.append(article)
 

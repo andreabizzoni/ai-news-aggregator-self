@@ -1,27 +1,11 @@
 """YouTube channel scraper using RSS feed."""
 
 from datetime import datetime, timedelta, timezone
-from typing import Optional, List
+from typing import List
 import feedparser
 from youtube_transcript_api import YouTubeTranscriptApi
-from pydantic import BaseModel
 
-
-class YouTubeVideo(BaseModel):
-    """Represents a YouTube video."""
-
-    video_id: str
-    title: str
-    url: str
-    published_at: datetime
-    author: str
-    thumbnail_url: Optional[str] = None
-
-
-class VideoTranscript(BaseModel):
-    """Represents a YouTube video transcript."""
-
-    transcript: str
+from models.youtube import YouTubeVideo, VideoTranscript
 
 
 class YouTubeScraper:

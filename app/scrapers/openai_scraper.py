@@ -2,17 +2,8 @@
 
 from datetime import datetime, timedelta, timezone
 import feedparser
-from pydantic import BaseModel
 
-
-class NewsArticle(BaseModel):
-    """Represents an OpenAI news article."""
-
-    title: str
-    description: str
-    url: str
-    published_at: datetime
-    guid: str
+from models.news import NewsArticle
 
 
 class OpenAIScraper:

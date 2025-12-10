@@ -1,5 +1,7 @@
 """Scrapers module for fetching content from various sources."""
 
-from .youtube_scraper import YouTubeScraper, YouTubeVideo
+from .youtube_scraper import YouTubeScraper
+from .anthropic_scraper import AnthropicAIScraper
+from .openai_scraper import OpenAIScraper
 
-__all__ = ['YouTubeScraper', 'YouTubeVideo']
+__all__ = ["YouTubeScraper", "AnthropicAIScraper", "OpenAIScraper"]
