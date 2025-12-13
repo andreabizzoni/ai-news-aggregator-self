@@ -64,10 +64,13 @@ class YouTubeScraper:
             The full transcript as a string
         """
         ytt_api = YouTubeTranscriptApi()
-        transcript_list = ytt_api.fetch(video_id)
-        return VideoTranscript(
-            transcript=" ".join([snippet.text for snippet in transcript_list])
-        )
+        try:
+            transcript_list = ytt_api.fetch(video_id)
+            return VideoTranscript(
+                transcript=" ".join([snippet.text for snippet in transcript_list])
+            )
+        except Exception:
+            return None
 
     def scrape_youtube_channel(
         self, channel_id: str, time_window_hours: int = 24
@@ -75,5 +78,7 @@ class YouTubeScraper:
         videos = self.get_latest_videos(channel_id, time_window_hours)
         transcripts = []
         for video in videos:
-            transcripts.append(self.get_transcript(video.video_id))
+            transcript = self.get_transcript(video.video_id)
+            if transcript:
+                transcripts.append(transcript)
         return transcripts
