@@ -55,6 +55,7 @@ class AnthropicAIScraper:
 
                 if published_at >= cutoff_time:
                     article = NewsArticle(
+                        source="Anthropic",
                         title=entry.title,
                         description=entry.description,
                         url=entry.link,

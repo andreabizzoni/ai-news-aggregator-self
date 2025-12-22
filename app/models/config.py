@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List
 
-from .youtube import VideoTranscript
+from .youtube import YouTubeVideo
 from .news import NewsArticle
 
 
@@ -15,8 +15,8 @@ class RunnerConfig(BaseModel):
 
 
 class RunnerResult(BaseModel):
-    youtube_videos: List[VideoTranscript] = Field(
-        default=None, description="List of youtube video transcripts"
+    youtube_videos: List[YouTubeVideo] = Field(
+        default=None, description="List of youtube videos"
     )
     openai_articles: List[NewsArticle] = Field(
         default=None, description="List of OpenAI news articles"

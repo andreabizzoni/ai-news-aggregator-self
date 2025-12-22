@@ -5,7 +5,7 @@ from typing import List
 import feedparser
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from models.youtube import YouTubeVideo, VideoTranscript
+from models.youtube import YouTubeVideo
 
 
 class YouTubeScraper:
@@ -13,9 +13,26 @@ class YouTubeScraper:
 
     RSS_FEED_URL = "https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"
 
-    def get_latest_videos(
+    def get_transcript(self, video_id: str) -> str:
+        """
+        Fetch the transcript for a YouTube video.
+
+        Args:
+            video_id: The YouTube video ID
+
+        Returns:
+            The full transcript as a string
+        """
+        ytt_api = YouTubeTranscriptApi()
+        try:
+            transcript_list = ytt_api.fetch(video_id)
+            return " ".join([snippet.text for snippet in transcript_list])
+        except Exception:
+            return None
+
+    def scrape_youtube_channel(
         self, channel_id: str, time_window_hours: int = 24
-    ) -> list[YouTubeVideo]:
+    ) -> List[YouTubeVideo]:
         """
         Scrape a YouTube channel for videos published within a time window.
 
@@ -45,40 +62,8 @@ class YouTubeScraper:
                     url=entry.link,
                     published_at=published_at,
                     author=entry.author,
-                    thumbnail_url=entry.media_thumbnail[0]["url"]
-                    if entry.get("media_thumbnail")
-                    else None,
+                    transcript=self.get_transcript(entry.yt_videoid),
                 )
                 videos.append(video)
 
         return videos
-
-    def get_transcript(self, video_id: str) -> VideoTranscript:
-        """
-        Fetch the transcript for a YouTube video.
-
-        Args:
-            video_id: The YouTube video ID
-
-        Returns:
-            The full transcript as a string
-        """
-        ytt_api = YouTubeTranscriptApi()
-        try:
-            transcript_list = ytt_api.fetch(video_id)
-            return VideoTranscript(
-                transcript=" ".join([snippet.text for snippet in transcript_list])
-            )
-        except Exception:
-            return None
-
-    def scrape_youtube_channel(
-        self, channel_id: str, time_window_hours: int = 24
-    ) -> List[VideoTranscript]:
-        videos = self.get_latest_videos(channel_id, time_window_hours)
-        transcripts = []
-        for video in videos:
-            transcript = self.get_transcript(video.video_id)
-            if transcript:
-                transcripts.append(transcript)
-        return transcripts

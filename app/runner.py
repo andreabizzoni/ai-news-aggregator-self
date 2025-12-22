@@ -14,10 +14,9 @@ class Runner:
 
         youtube_videos = []
         for channel in self.youtube_channels:
-            for video in youtube_scraper.scrape_youtube_channel(
-                channel, self.time_window_hours
-            ):
-                youtube_videos.append(video)
+            youtube_videos.extend(
+                youtube_scraper.scrape_youtube_channel(channel, self.time_window_hours)
+            )
 
         openai_articles = openai_scraper.scrape_news(self.time_window_hours)
         anthropic_articles = anthropic_scraper.scrape_news(self.time_window_hours)

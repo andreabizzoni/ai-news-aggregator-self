@@ -1,7 +1,6 @@
 """YouTube video models."""
 
 from datetime import datetime
-from typing import Optional
 from pydantic import BaseModel, Field
 
 
@@ -13,12 +12,6 @@ class YouTubeVideo(BaseModel):
     url: str = Field(..., description="The URL to the video")
     published_at: datetime = Field(..., description="The publication date and time")
     author: str = Field(..., description="The author/channel name of the video")
-    thumbnail_url: Optional[str] = Field(
-        None, description="The URL to the video thumbnail"
+    transcript: str = Field(
+        default=None, description="The full transcript text of the video"
     )
-
-
-class VideoTranscript(BaseModel):
-    """Represents a YouTube video transcript."""
-
-    transcript: str = Field(..., description="The full transcript text of the video")

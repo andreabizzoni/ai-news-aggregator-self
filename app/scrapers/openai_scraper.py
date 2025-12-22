@@ -34,6 +34,7 @@ class OpenAIScraper:
 
             if published_at >= cutoff_time:
                 article = NewsArticle(
+                    source="OpenAI",
                     title=entry.title,
                     description=entry.description,
                     url=entry.link,
