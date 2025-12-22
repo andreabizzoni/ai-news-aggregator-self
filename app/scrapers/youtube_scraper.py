@@ -55,6 +55,7 @@ class YouTubeScraper:
         for entry in feed.entries:
             if "/shorts/" in entry.link:
                 continue
+
             published_at = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
 
             if published_at >= cutoff_time:
