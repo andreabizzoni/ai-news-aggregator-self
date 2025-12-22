@@ -1,8 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List
 
-from .youtube import YouTubeVideo
-from .news import NewsArticle
+from .news import NewsItem
 
 
 class RunnerConfig(BaseModel):
@@ -15,12 +14,9 @@ class RunnerConfig(BaseModel):
 
 
 class RunnerResult(BaseModel):
-    youtube_videos: List[YouTubeVideo] = Field(
+    youtube_videos: List[NewsItem] = Field(
         default=None, description="List of youtube videos"
     )
-    openai_articles: List[NewsArticle] = Field(
-        default=None, description="List of OpenAI news articles"
-    )
-    anthropic_articles: List[NewsArticle] = Field(
-        default=None, description="List of Anthropic news articles"
-    )
+    videos_saved: int = Field(default=0, description="Number of YouTube videos saved")
+    articles: List[NewsItem] = Field(default=None, description="List of news articles")
+    articles_saved: int = Field(default=0, description="Number of news articles saved")

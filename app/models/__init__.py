@@ -1,12 +1,7 @@
 """Pydantic models for the AI news aggregator."""
 
-from .news import NewsArticle
-from .youtube import YouTubeVideo
+from .news import NewsItem
 from .config import RunnerConfig, RunnerResult
+from .llm_response import LLMResponse
 
-__all__ = [
-    "NewsArticle",
-    "YouTubeVideo",
-    "RunnerConfig",
-    "RunnerResult",
-]
+__all__ = ["NewsItem", "RunnerConfig", "RunnerResult", "LLMResponse"]

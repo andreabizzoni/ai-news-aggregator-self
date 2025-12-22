@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 import feedparser
 from docling.document_converter import DocumentConverter
 
-from models.news import NewsArticle
+from models.news import NewsItem
 
 
 class AnthropicAIScraper:
@@ -20,7 +20,7 @@ class AnthropicAIScraper:
         """Initialize the scraper with a DocumentConverter instance."""
         self.converter = DocumentConverter()
 
-    def scrape_news(self, time_window_hours: int = 24) -> list[NewsArticle]:
+    def scrape_news(self, time_window_hours: int = 24) -> list[NewsItem]:
         """
         Scrape Anthropic news feeds for articles published within a time window.
 
@@ -50,17 +50,17 @@ class AnthropicAIScraper:
                         *entry.updated_parsed[:6], tzinfo=timezone.utc
                     )
                 else:
-                    # Skip entries without date information
                     continue
 
                 if published_at >= cutoff_time:
-                    article = NewsArticle(
+                    article = NewsItem(
                         source="Anthropic",
                         title=entry.title,
                         description=entry.description,
                         url=entry.link,
                         published_at=published_at,
                         guid=entry.guid,
+                        author="Anthropic",
                     )
                     articles.append(article)
 

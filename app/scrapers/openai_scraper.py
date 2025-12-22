@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta, timezone
 import feedparser
 
-from models.news import NewsArticle
+from models.news import NewsItem
 
 
 class OpenAIScraper:
@@ -11,7 +11,7 @@ class OpenAIScraper:
 
     RSS_FEED_URL = "https://openai.com/news/rss.xml"
 
-    def scrape_news(self, time_window_hours: int = 24) -> list[NewsArticle]:
+    def scrape_news(self, time_window_hours: int = 24) -> list[NewsItem]:
         """
         Scrape OpenAI news feed for articles published within a time window.
 
@@ -33,13 +33,14 @@ class OpenAIScraper:
             published_at = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
 
             if published_at >= cutoff_time:
-                article = NewsArticle(
+                article = NewsItem(
                     source="OpenAI",
                     title=entry.title,
                     description=entry.description,
                     url=entry.link,
                     published_at=published_at,
                     guid=entry.guid,
+                    author="OpenAI",
                 )
                 articles.append(article)
 

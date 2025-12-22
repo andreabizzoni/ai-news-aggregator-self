@@ -5,7 +5,7 @@ from typing import List
 import feedparser
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from models.youtube import YouTubeVideo
+from models.news import NewsItem
 
 
 class YouTubeScraper:
@@ -32,7 +32,7 @@ class YouTubeScraper:
 
     def scrape_youtube_channel(
         self, channel_id: str, time_window_hours: int = 24
-    ) -> List[YouTubeVideo]:
+    ) -> List[NewsItem]:
         """
         Scrape a YouTube channel for videos published within a time window.
 
@@ -59,13 +59,14 @@ class YouTubeScraper:
             published_at = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
 
             if published_at >= cutoff_time:
-                video = YouTubeVideo(
-                    video_id=entry.yt_videoid,
+                video = NewsItem(
+                    guid=entry.yt_videoid,
+                    source="YouTube",
                     title=entry.title,
                     url=entry.link,
                     published_at=published_at,
                     author=entry.author,
-                    transcript=self.get_transcript(entry.yt_videoid),
+                    description=self.get_transcript(entry.yt_videoid),
                 )
                 videos.append(video)
 

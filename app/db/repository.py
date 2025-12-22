@@ -7,9 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
 
-from .models import Base, YouTubeVideoDB, NewsArticleDB
-from models.news import NewsArticle
-from models.youtube import YouTubeVideo
+from .models import Base, NewsItemDB
+from models.news import NewsItem
 
 load_dotenv()
 
@@ -31,68 +30,41 @@ class Repository:
         """Create all database tables."""
         Base.metadata.create_all(self.engine)
 
-    def save_youtube_videos(self, videos: List[YouTubeVideo]) -> int:
-        """Save YouTube videos to the database, ignoring duplicates.
+    def save_news_items(self, items: List[NewsItem]) -> int:
+        """Save news items to the database using upsert.
 
         Args:
-            videos: List of YouTube videos to save.
+            items: List of news items to save.
 
         Returns:
-            Number of videos saved.
+            Number of items saved.
         """
-        if not videos:
+        if not items:
             return 0
 
         with self.SessionLocal() as session:
-            for video in videos:
-                stmt = insert(YouTubeVideoDB).values(
-                    video_id=video.video_id,
-                    title=video.title,
-                    url=video.url,
-                    published_at=video.published_at,
-                    author=video.author,
-                    transcript=video.transcript,
-                )
-                stmt = stmt.on_conflict_do_nothing(index_elements=["video_id"])
-                session.execute(stmt)
-
-            session.commit()
-            return len(videos)
-
-    def save_news_articles(self, articles: List[NewsArticle]) -> int:
-        """Save news articles to the database using upsert.
-
-        Args:
-            articles: List of news articles to save.
-
-        Returns:
-            Number of articles saved.
-        """
-        if not articles:
-            return 0
-
-        with self.SessionLocal() as session:
-            for article in articles:
-                stmt = insert(NewsArticleDB).values(
-                    source=article.source,
-                    title=article.title,
-                    description=article.description,
-                    url=article.url,
-                    published_at=article.published_at,
-                    guid=article.guid,
+            for item in items:
+                stmt = insert(NewsItemDB).values(
+                    source=item.source,
+                    title=item.title,
+                    description=item.description,
+                    url=item.url,
+                    published_at=item.published_at,
+                    guid=item.guid,
+                    digest=item.digest,
                 )
                 stmt = stmt.on_conflict_do_nothing(index_elements=["guid"])
                 session.execute(stmt)
 
             session.commit()
-            return len(articles)
+            return len(items)
 
-    def get_all_youtube_videos(self) -> List[YouTubeVideoDB]:
+    def get_all_youtube_videos(self) -> List[NewsItemDB]:
         """Retrieve all YouTube videos from the database."""
         with self.SessionLocal() as session:
-            return session.query(YouTubeVideoDB).all()
+            return session.query(NewsItemDB).all()
 
-    def get_all_news_articles(self) -> List[NewsArticleDB]:
+    def get_all_news_articles(self) -> List[NewsItemDB]:
         """Retrieve all news articles from the database."""
         with self.SessionLocal() as session:
-            return session.query(NewsArticleDB).all()
+            return session.query(NewsItemDB).all()

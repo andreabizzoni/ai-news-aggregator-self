@@ -1,6 +1,6 @@
 """Database module for storing scraped content."""
 
-from .models import Base, YouTubeVideoDB, NewsArticleDB
+from .models import Base, NewsItemDB
 from .repository import Repository
 
-__all__ = ["Base", "YouTubeVideoDB", "NewsArticleDB", "Repository"]
+__all__ = ["Base", "NewsItemDB", "Repository"]
