@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import insert
 
 from .models import Base, NewsItemDB
-from models.news import NewsItem
+from ..models.news import NewsItem
 
 load_dotenv()
 

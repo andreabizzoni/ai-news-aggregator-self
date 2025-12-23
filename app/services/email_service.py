@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 import logging
 from dotenv import load_dotenv
 
-from models.llm_response import EmailLLMResponse
+from ..models.llm_response import EmailLLMResponse
 
 load_dotenv()
 logger = logging.getLogger(__name__)

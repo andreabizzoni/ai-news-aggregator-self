@@ -1,9 +1,9 @@
-from models import RunnerConfig
-from models.news import NewsItem
-from scrapers import AnthropicAIScraper, YouTubeScraper, OpenAIScraper
-from db import Repository
-from agent import Agent
-from services import EmailService
+from .models import RunnerConfig
+from .models.news import NewsItem
+from .scrapers import AnthropicAIScraper, YouTubeScraper, OpenAIScraper
+from .db import Repository
+from .agent import Agent
+from .services import EmailService
 import asyncio
 import logging
 from typing import List, Tuple
@@ -83,19 +83,5 @@ class Runner:
         email_content = self.agent.create_email_content(all_digested_items)
         email_sent = self.email_service.send_email(email_content)
 
-        if email_sent:
-            logger.info("Email sent successfully")
-        else:
+        if not email_sent:
             logger.error("Failed to send email. Check logs for details")
-
-
-if __name__ == "__main__":
-    repository = Repository()
-    repository.create_tables()
-
-    config = RunnerConfig(
-        time_window_hours=50,
-        youtube_channels=["UCLKPca3kwwd-B59HNr-_lvA", "UCn8ujwUInbJkBhffxqAPBVQ"],
-    )
-    runner = Runner(config, repository)
-    result = runner.run()

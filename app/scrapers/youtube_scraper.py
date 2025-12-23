@@ -4,7 +4,7 @@ import feedparser
 from youtube_transcript_api import YouTubeTranscriptApi
 import logging
 
-from models.news import NewsItem
+from ..models.news import NewsItem
 
 logger = logging.getLogger(__name__)
 

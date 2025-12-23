@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 import feedparser
 import logging
 
-from models.news import NewsItem
+from ..models.news import NewsItem
 
 logger = logging.getLogger(__name__)
 

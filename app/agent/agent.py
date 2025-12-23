@@ -1,8 +1,8 @@
 import os
 from google.genai import Client
-from models.news import NewsItem
+from ..models.news import NewsItem
 from typing import List
-from models.llm_response import DigestLLMResponse, EmailLLMResponse
+from ..models.llm_response import DigestLLMResponse, EmailLLMResponse
 import logging
 import asyncio
 from datetime import datetime

@@ -1,11 +1,10 @@
 [project]
 name = "ai-news-aggregator-self"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI News Aggregator"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "docling>=2.64.1",
     "feedparser>=6.0.11",
     "google-genai>=1.56.0",
     "psycopg2-binary>=2.9.11",
