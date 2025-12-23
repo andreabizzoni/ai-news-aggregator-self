@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 import feedparser
-from docling.document_converter import DocumentConverter
 import logging
 
 from models.news import NewsItem
@@ -17,20 +16,7 @@ class AnthropicAIScraper:
         "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic_research.xml",
     ]
 
-    def __init__(self):
-        """Initialize the scraper with a DocumentConverter instance."""
-        self.converter = DocumentConverter()
-
     def scrape_news(self, time_window_hours: int = 24) -> list[NewsItem]:
-        """
-        Scrape Anthropic news feeds for articles published within a time window.
-
-        Args:
-            time_window_hours: Number of hours to look back (default: 24)
-
-        Returns:
-            List of NewsArticle objects published within the time window
-        """
         cutoff_time = datetime.now(timezone.utc) - timedelta(hours=time_window_hours)
         articles = []
 
@@ -67,22 +53,3 @@ class AnthropicAIScraper:
         articles.sort(key=lambda x: x.published_at, reverse=True)
         logger.info("Anthropic articles scraped successfully")
         return articles
-
-    def convert_article_to_markdown(self, url: str) -> str:
-        """
-        Convert an article from URL to markdown format.
-
-        Args:
-            url: The URL of the article to convert
-
-        Returns:
-            The article content in markdown format
-        """
-        result = self.converter.convert(url)
-        return result.document.export_to_markdown()
-
-
-if __name__ == "__main__":
-    scraper = AnthropicAIScraper()
-    articles = scraper.scrape_news(time_window_hours=200)
-    results = [scraper.convert_article_to_markdown(article.url) for article in articles]

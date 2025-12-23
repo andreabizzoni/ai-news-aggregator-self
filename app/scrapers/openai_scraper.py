@@ -13,15 +13,6 @@ class OpenAIScraper:
     RSS_FEED_URL = "https://openai.com/news/rss.xml"
 
     def scrape_news(self, time_window_hours: int = 24) -> list[NewsItem]:
-        """
-        Scrape OpenAI news feed for articles published within a time window.
-
-        Args:
-            time_window_hours: Number of hours to look back (default: 24)
-
-        Returns:
-            List of NewsArticle objects published within the time window
-        """
         feed = feedparser.parse(self.RSS_FEED_URL)
 
         if not feed.entries:
