@@ -73,9 +73,8 @@ class EmailService:
             <!DOCTYPE html>
             <html>
             <body style="font-family: Arial, sans-serif; padding: 20px;">
-                <h2>AI News Digest</h2>
                 <p>Oops! We had some issues generating your news digest today.</p>
-                <p>Please hang tight while we quash a few bugs.</p>
+                <p>Please hang tight while we squash a few bugs.</p>
             </body>
             </html>
             """
