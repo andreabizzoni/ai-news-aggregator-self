@@ -29,7 +29,7 @@ class EmailService:
                 <p style="color: #555; line-height: 1.6; margin: 10px 0;">{item.summary}</p>
                 <div style="margin-top: 15px;">
                     <a href="{item.url}" style="display: inline-block; background-color: #4a90e2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">Read More</a>
-                    <span style="color: #888; font-size: 14px; margin-left: 15px;">Source: {item.source}</span>
+                    <div style="color: #888; font-size: 14px; margin-top: 15px;">Source: {item.source}</div>
                 </div>
             </div>
             """
@@ -52,10 +52,6 @@ class EmailService:
                 <p style="color: #555; line-height: 1.8; margin-bottom: 30px;">{email_content.introduction}</p>
                 
                 {items_html}
-                
-                <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
-                    <p style="color: #555; font-style: italic;">{email_content.sign_off}</p>
-                </div>
             </div>
             
             <div style="text-align: center; padding: 20px; color: #888; font-size: 12px;">

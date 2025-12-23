@@ -94,7 +94,7 @@ if __name__ == "__main__":
     repository.create_tables()
 
     config = RunnerConfig(
-        time_window_hours=100,
+        time_window_hours=50,
         youtube_channels=["UCLKPca3kwwd-B59HNr-_lvA", "UCn8ujwUInbJkBhffxqAPBVQ"],
     )
     runner = Runner(config, repository)
