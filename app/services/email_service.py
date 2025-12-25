@@ -51,7 +51,7 @@ class EmailService:
             
             <div style="background-color: white; padding: 30px; border: 1px solid #e0e0e0; border-top: none;">
                 <p style="font-size: 16px; margin: 0 0 10px 0;">Hi {user},</p>
-                <p style="font-size: 18px; color: #4a90e2; font-weight: bold; margin: 0 0 20px 0;">Your AI digest for {datetime.now().strftime("%B %d, %Y")} is ready!</p>
+                <p style="font-size: 18px; color: #4a90e2; font-weight: bold; margin: 0 0 20px 0;">Your AI News Digest for {datetime.now().strftime("%B %d, %Y")} is ready!</p>
                 <p style="color: #555; line-height: 1.8; margin-bottom: 30px;">{email_content.introduction}</p>
                 
                 {items_html}
