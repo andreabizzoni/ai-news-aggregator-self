@@ -22,9 +22,21 @@ class Runner:
     async def _run_digest_async(
         self, articles: List[NewsItem], videos: List[NewsItem]
     ) -> Tuple[List[NewsItem], List[NewsItem]]:
-        articles_task = self.agent.add_digest(articles)
-        videos_task = self.agent.add_digest(videos)
-        return await asyncio.gather(articles_task, videos_task)
+        tasks = []
+        if articles:
+            tasks.append(self.agent.add_digest(articles))
+        if videos:
+            tasks.append(self.agent.add_digest(videos))
+        if not tasks:
+            return articles, videos
+
+        results = await asyncio.gather(*tasks)
+        digested_articles = results[0] if articles else articles
+        digested_videos = (
+            results[1] if (articles and videos) else (results[0] if videos else videos)
+        )
+
+        return digested_articles, digested_videos
 
     async def _scrape_all_async(
         self,
