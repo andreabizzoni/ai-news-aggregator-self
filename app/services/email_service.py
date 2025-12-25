@@ -3,7 +3,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import logging
-import datetime
+from datetime import datetime
 from dotenv import load_dotenv
 
 from ..models.llm_response import EmailLLMResponse
