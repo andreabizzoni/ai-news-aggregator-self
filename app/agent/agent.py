@@ -88,7 +88,7 @@ class Agent:
                 model=self.model,
                 input={
                     "messages": [{"role": "user", "content": formatted_prompt}],
-                    "response_schema": DigestLLMResponse.model_json_schema,
+                    "response_schema": DigestLLMResponse.model_json_schema(),
                 },
                 output=response.text,
                 usage_details={
@@ -147,7 +147,7 @@ class Agent:
                 model=self.model,
                 input={
                     "messages": [{"role": "user", "content": formatted_prompt}],
-                    "response_schema": EmailLLMResponse.model_json_schema,
+                    "response_schema": EmailLLMResponse.model_json_schema(),
                 },
                 output=response.text,
                 usage_details={
