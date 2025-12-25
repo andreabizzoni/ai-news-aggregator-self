@@ -1,5 +1,6 @@
 from .models import RunnerConfig
 from .models.news import NewsItem
+from .models.llm_response import EmailLLMResponse
 from .scrapers import AnthropicAIScraper, YouTubeScraper, OpenAIScraper, ModularScraper
 from .db import Repository
 from .agent import Agent
@@ -99,8 +100,17 @@ class Runner:
         )
 
         all_digested_items = digested_articles + digested_youtube_videos
-        email_content = self.agent.create_email_content(all_digested_items)
-        email_sent = self.email_service.send_email(email_content)
+
+        if all_digested_items:
+            email_content = self.agent.create_email_content(all_digested_items)
+            email_sent = self.email_service.send_email(email_content)
+        else:
+            email_sent = self.email_service.send_email(
+                email_content=EmailLLMResponse(
+                    introduction="You're all caught up for today, check again tomorrow :)",
+                    digest_items=[],
+                )
+            )
 
         if not email_sent:
             logger.error("Failed to send email. Check logs for details")
