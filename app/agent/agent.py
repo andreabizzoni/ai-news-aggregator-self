@@ -58,11 +58,11 @@ class Agent:
     def __init__(self):
         self.model = "gemini-2.5-flash"
         self.client = Client(api_key=os.getenv("GEMINI_API_KEY"))
-        self.prompt = DIGEST_PROMPT
+        self.langfuse = get_client()
 
-    @observe(as_type="generation")
+    @observe(capture_input=False, capture_output=False, as_type="generation")
     async def add_digest(self, items: List[NewsItem]) -> List[NewsItem]:
-        formatted_prompt = self.prompt.format(
+        formatted_prompt = DIGEST_PROMPT.format(
             contents="\n".join(
                 [
                     item.model_dump_json(
@@ -84,9 +84,10 @@ class Agent:
                 },
             )
 
-            langfuse = get_client()
-            langfuse.update_current_generation(
+            self.langfuse.update_current_generation(
                 model=self.model,
+                input=formatted_prompt,
+                output=response.text,
                 usage_details={
                     "input": response.usage_metadata.prompt_token_count,
                     "output": response.usage_metadata.candidates_token_count,
@@ -108,7 +109,7 @@ class Agent:
             logger.exception(f"Failed to generate digests for news articles: {e}")
             return items
 
-    @observe(as_type="generation")
+    @observe(capture_input=False, capture_output=False, as_type="generation")
     def create_email_content(self, items: List[NewsItem]) -> EmailLLMResponse:
         formatted_prompt = EMAIL_PROMPT.format(
             contents="\n".join(
@@ -139,9 +140,10 @@ class Agent:
                 },
             )
 
-            langfuse = get_client()
-            langfuse.update_current_generation(
+            self.langfuse.update_current_generation(
                 model=self.model,
+                input=formatted_prompt,
+                output=response.text,
                 usage_details={
                     "input": response.usage_metadata.prompt_token_count,
                     "output": response.usage_metadata.candidates_token_count,
