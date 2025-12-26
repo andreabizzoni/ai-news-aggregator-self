@@ -15,11 +15,6 @@ class Repository:
     """Repository for database operations."""
 
     def __init__(self, database_url: str | None = None):
-        """Initialize the repository with a database connection.
-
-        Args:
-            database_url: Database connection URL. If not provided, reads from DATABASE_URL env var.
-        """
         self.database_url = database_url or os.getenv("DATABASE_URL")
         self.engine = create_engine(self.database_url)
         self.SessionLocal = sessionmaker(bind=self.engine)
@@ -29,14 +24,7 @@ class Repository:
         Base.metadata.create_all(self.engine)
 
     def save_news_items(self, items: List[NewsItem]) -> int:
-        """Save news items to the database using upsert.
-
-        Args:
-            items: List of news items to save.
-
-        Returns:
-            Number of items saved.
-        """
+        """Save news items to the database using upsert."""
         if not items:
             return 0
 
